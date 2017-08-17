@@ -35,7 +35,9 @@ public class CompanyController {
     public ResponseEntity<List<Company>> findByName(
                 @RequestParam(value="name", required=false) String name) {
         logger.info("CompanyController-findByName: {}", name);
-        return new ResponseEntity<>(this.companyService.findAllByNameContaining(name), HttpStatus.OK);
+        List<Company> result = (name == null) ? this.companyService.findAll() :
+                                                this.companyService.findAllByNameContaining(name);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)

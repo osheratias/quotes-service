@@ -31,10 +31,13 @@ public class QuoteController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<QuoteDTO>> findByName(
+    public ResponseEntity<List<QuoteDTO>> queryByCompanyName(
             @RequestParam(value="name", required=false) String name) {
-        logger.info("QuoteController-findByName: {}", name);
-        return new ResponseEntity<>(this.quoteService.queryByCompanyId(name), HttpStatus.OK);
+
+        logger.info("QuoteController-queryByCompanyName: {}", name);
+        List<QuoteDTO> result = (name == null) ? this.quoteService.findAll() :
+                                                this.quoteService.queryByCompanyId(name);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)

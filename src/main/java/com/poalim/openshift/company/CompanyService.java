@@ -7,8 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by osher on 20/7/17.
@@ -22,6 +23,11 @@ public class CompanyService {
     @Autowired
     private CompanyRepository companyRepository;
 
+    public List<Company> findAll() {
+        logger.debug("CompanyService-findAll");
+        return Optional.ofNullable(companyRepository.findAll()).orElse(Collections.emptyList()) ;
+    }
+
     public Company findById(String id) {
         logger.debug("CompanyService-findById: id={}", id);
         return companyRepository.findById(id).orElseThrow(() ->
@@ -31,7 +37,7 @@ public class CompanyService {
     public List<Company> findAllByNameContaining(String name) {
         logger.debug("CompanyService-findAllByNameContaining: name={}", name);
         return this.companyRepository.findByNameIgnoreCaseContaining(name)
-                .orElse(new ArrayList<>());
+                .orElse(Collections.emptyList());
     }
 
     @Transactional
